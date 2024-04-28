@@ -1,17 +1,10 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql2");
+const db = require('./config/database')
 const PORT = 3001;
 
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "jJ03101526",
-    database: "ecommerceDB",
-});
-db.connect();
 
 app.get('/createdb', (req,res)=>{
     let sql = 'CREATE DATABASE ecommerceDB';
