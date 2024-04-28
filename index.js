@@ -84,14 +84,77 @@ app.put('/updateCategory/:id', (req, res)=>{
     })
 });
 
-app.get('/productsName', (req, res)=>{
+app.get('/allTheProducts', (req, res)=>{
     let sql = 'SELECT * FROM product';
     db.query(sql, (err, result)=>{
         if(err)throw err;
         console.log(result);
-        res.send()
+        res.send('Get all the products')
     })
-})
+});
+
+app.get('/allCategories', (req, res)=>{
+    let sql = 'SELECT * FROM category';
+    db.query(sql, (err, result)=>{
+        if(err)throw err;
+        console.log(result);
+        res.send('Get all categories')
+    })
+});
+
+// app.get('/productsWhitCategories', (req, res)=>{
+//     let sql = 'SELECT * FROM category_product';
+//     db.query(sql, (err, result)=>{
+//         if(err)throw err;
+//         console.log(result);
+//         res.send('Products whit its categories')
+//     })
+// });
+
+app.get('/product/:id', (req, res)=>{
+    let sql = `SELECT * FROM product WHERE id = ${req.params.id}`;
+    db.query(sql, (err, result)=>{
+        if (err) throw err;
+        if(result.length > 0){
+            res.send(result[0]);
+        }else{
+            res.status(404).send('Product not found')
+        }
+    });
+});
+
+// app.get('/productPriceDescendent', (req, res)=>{
+//     let sql = `SELECT FROM product ORDER BY price DESC`;
+//     db.query(sql, (err, result)=>{
+//         if (err) throw err;
+//         res.send(result)
+//     })
+// })
+
+
+app.get('/category/:id', (req, res)=>{
+    let sql = `SELECT * FROM category WHERE id = ${req.params.id}`;
+    db.query(sql, (err, result)=>{
+        if (err) throw err;
+        if (result.length > 0) {
+            res.send(result[0]);
+        } else {
+            res.status(404).send('Category not found');
+        }
+    });
+});
+//NO FUNCIONA MIRAR MAS TARDE
+// app.get('/product/:name', (req, res)=>{
+//     let sql = `SELECT * FROM product WHERE name = '${req.params.name}'`;
+//     db.query(sql, (err, result)=>{
+//         if (err) throw err;
+//         if(result.length > 0){
+//             res.send(result[0]);
+//         }else{
+//             res.status(404).send('Product not found')
+//         }
+//     });
+// });
 
 
 app.delete('/id/:id', (req, res)=>{
