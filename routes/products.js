@@ -1,86 +1,23 @@
 const express = require('express');
-// const ProductsControllers = require('../controllers/ProductsControllers');
+const ProductController = require('../controllers/ProductControllers');
 const router = express.Router();
-const db = require('../config/database')
-
-router.post('/', (req, res)=>{
-    let sql = `INSERT INTO product (name, price) values ('${req.body.name}', '${req.body.price}');`;
-    db.query(sql, (err, result)=>{
-        if (err) throw err;
-        console.log(result);
-        res.send('Product added')
-    })
-});
-
-router.put('/updateProduct/:id', (req, res)=>{
-    let sql = `UPDATE product SET name = '${req.body.name}' WHERE id = ${req.params.id}`;
-    db.query(sql, (err)=>{
-        if (err) throw err;
-        res.send(result);
-    })
-});
-
-// router.get('/productsWhitCategories', (req, res)=>{
-//     let sql = 'SELECT * FROM category_product';
-//     db.query(sql, (err, result)=>{
-//         if(err)throw err;
-//         console.log(result);
-//         res.send('Products whit its categories')
-//     })
-// });
 
 
+router.post('/', ProductController.insert);
 
-// router.get('/productPriceDescendent', (req, res)=>{
-//     let sql = `SELECT FROM product ORDER BY price DESC`;
-//     db.query(sql, (err, result)=>{
-//         if (err) throw err;
-//         res.send(result)
-//     })
-// })
+router.put('/updateProduct/:id', ProductController.updateProduct);
 
-router.get('/allTheProducts', (req, res)=>{
-    let sql = 'SELECT * FROM product';
-    db.query(sql, (err, result)=>{
-        if(err)throw err;
-        console.log(result);
-        res.send('Get all the products')
-    })
-});
+router.get('/productsWhitCategories', ProductController.getProductsWithCategory);
 
+router.get('/productIdDescendent', ProductController.getDescentProduct);
 
-//NO FUNCIONA MIRAR MAS TARDE
-// router.get('/product/:name', (req, res)=>{
-//     let sql = `SELECT * FROM product WHERE name = '${req.params.name}'`;
-//     db.query(sql, (err, result)=>{
-//         if (err) throw err;
-//         if(result.length > 0){
-//             res.send(result[0]);
-//         }else{
-//             res.status(404).send('Product not found')
-//         }
-//     });
-// });
+router.get('/allTheProducts', ProductController.getAll);
 
-router.get('/product/:id', (req, res)=>{
-    let sql = `SELECT * FROM product WHERE id = ${req.params.id}`;
-    db.query(sql, (err, result)=>{
-        if (err) throw err;
-        if(result.length > 0){
-            res.send(result[0]);
-        }else{
-            res.status(404).send('Product not found')
-        }
-    });
-});
+router.get('/product/:name', ProductController.getProductByName);
 
-router.delete('/id/:id', (req, res)=>{
-    let sql = `DELETE FROM product WHERE id = ${req.params.id}`;
-    db.query(sql, (err, result)=>{
-        if (err) throw err;
-        res.send('Product deleted')
-    })
-});
+router.get('/product/:id', ProductController.getProductById);
+
+router.delete('/id/:id', ProductController.delete);
 
 
 module.exports = router;
